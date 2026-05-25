@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+import { useRef } from "react";
 import { CategoriesSection } from "../components/CategoriesSection";
 import { HeroSection } from "../components/HeroSection";
 import { ProductsSection } from "../components/ProductsSection";
@@ -116,23 +118,32 @@ const mockProducts = [
   },
 ];
 export const HomeStorePage = () => {
+  const navigate = useNavigate();
+
+  const scrollToProducts = () => {
+    const el = document.getElementById("products");
+    el?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
 
-      {/* HERO FULL WIDTH */}
-      <HeroSection />
+      <HeroSection
+        onScrollProducts={scrollToProducts}
+        onGoToCategories={() => navigate("/categorias")}
+      />
 
-      {/* CONTENT CENTERED */}
       <div className="w-full max-w-6xl mx-auto px-6">
 
-        <ProductsSection products={mockProducts} />
+        <div id="products">
+          <ProductsSection products={mockProducts} />
+        </div>
 
         <CategoriesSection categories={mockCategories} />
 
         <WhyChooseUsSection />
 
       </div>
-
     </div>
   );
 };

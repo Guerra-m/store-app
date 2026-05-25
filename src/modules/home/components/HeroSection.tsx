@@ -1,12 +1,18 @@
+type Props = {
+  onScrollProducts: () => void;
+  onGoToCategories: () => void;
+};
 
-export const HeroSection = () => {
+export const HeroSection = ({
+  onScrollProducts,
+  onGoToCategories,
+}: Props) => {
   return (
     <section className="relative min-h-[85vh] flex items-center bg-surface overflow-hidden">
 
-      {/* BACKGROUND GRADIENT */}
+      {/* BACKGROUND */}
       <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-transparent" />
 
-      {/* CONTENT */}
       <div className="relative z-10 max-w-6xl w-full mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
 
         {/* TEXT */}
@@ -22,13 +28,23 @@ export const HeroSection = () => {
           </p>
 
           <div className="flex gap-4">
-            <button className="bg-primary text-on-primary px-6 py-3 rounded-lg shadow-warm hover:opacity-90 transition">
+
+            {/* PRODUCTS → SCROLL */}
+            <button
+              onClick={onScrollProducts}
+              className="bg-primary text-on-primary px-6 py-3 rounded-lg shadow-warm hover:opacity-90 transition"
+            >
               Ver productos
             </button>
 
-            <button className="border border-outline px-6 py-3 rounded-lg hover:bg-surface-container transition">
+            {/* CATEGORIES → ROUTE */}
+            <button
+              onClick={onGoToCategories}
+              className="border border-outline px-6 py-3 rounded-lg hover:bg-surface-container transition"
+            >
               Explorar categorías
             </button>
+
           </div>
 
         </div>
@@ -44,7 +60,6 @@ export const HeroSection = () => {
               className="w-full max-w-md rounded-3xl shadow-warm object-cover hover:scale-105 transition-transform duration-700"
             />
 
-            {/* floating badge */}
             <div className="absolute -bottom-5 -right-5 bg-surface-container shadow-warm rounded-2xl px-4 py-3">
               <p className="text-sm font-semibold">
                 🍔 +100 platos disponibles
