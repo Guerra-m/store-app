@@ -1,5 +1,10 @@
+import type {
+  LoginResponse,
+  RegisterRequest,
+  UsuarioReadWithRoles,
+} from "../../modules/auth/types/User";
+
 import { http } from "./http";
-import type { User, LoginResponse, RegisterRequest } from "../../modules/auth/types/";
 
 // ─────────────────────────────────────────────
 // AUTH API
@@ -7,12 +12,12 @@ import type { User, LoginResponse, RegisterRequest } from "../../modules/auth/ty
 
 export const userApi = {
   // Registro de usuario
-  register: async (data: RegisterRequest): Promise<User> => {
+  register: async (data: RegisterRequest): Promise<UsuarioReadWithRoles> => {
     const res = await http.post("/api/v1/auth/register", data);
     return res.data;
   },
 
-  // Login (usa OAuth2 form-data)
+  // Login
   login: async (email: string, password: string): Promise<LoginResponse> => {
     const formData = new URLSearchParams();
     formData.append("username", email);
@@ -22,17 +27,18 @@ export const userApi = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      withCredentials: true, // importante para cookie HttpOnly
+      withCredentials: true,
     });
 
     return res.data;
   },
 
-  // Obtener usuario actual (/me)
-  me: async (): Promise<User> => {
+  // Usuario actual
+  me: async (): Promise<UsuarioReadWithRoles> => {
     const res = await http.get("/api/v1/auth/me", {
       withCredentials: true,
     });
+
     return res.data;
   },
 
@@ -47,9 +53,11 @@ export const userApi = {
 
   // Logout
   logout: async () => {
-    const res = await http.post("/api/v1/auth/logout", {}, {
-      withCredentials: true,
-    });
+    const res = await http.post(
+      "/api/v1/auth/logout",
+      {},
+      { withCredentials: true }
+    );
 
     return res.data;
   },
