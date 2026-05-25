@@ -13,11 +13,10 @@ type Props = {
 };
 
 export const ProductCard = ({ product }: Props) => {
-
-  const { isAuthenticated } = useAuthStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const handleAddToCart = () => {
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       alert("Tenés que iniciar sesión para agregar al carrito");
       return;
     }
@@ -25,6 +24,7 @@ export const ProductCard = ({ product }: Props) => {
     // acá luego llamás API carrito
     console.log("Agregado al carrito:", product.id);
   };
+
   return (
     <article
       className="
@@ -71,6 +71,7 @@ export const ProductCard = ({ product }: Props) => {
           </span>
 
           <button
+            onClick={handleAddToCart}
             className="
               bg-primary
               text-on-primary

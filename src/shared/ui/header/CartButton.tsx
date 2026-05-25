@@ -6,8 +6,8 @@ export const CartButton = () => {
   const { isAuthenticated } = useAuthStore();
   const { openModal } = useAuthModalStore();
 
-  const handleClick = (e: React.MouseEvent) => {
-    if (!isAuthenticated()) {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!isAuthenticated) {
       e.preventDefault(); // evita navegar a /carrito
       openModal();        // abre modal de login
       return;
