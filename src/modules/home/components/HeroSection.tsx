@@ -1,16 +1,17 @@
 
 export const HeroSection = () => {
   return (
-    <section className="relative w-full min-h-[80vh] flex items-center justify-center bg-surface overflow-hidden">
+    <section className="relative min-h-[85vh] flex items-center bg-surface overflow-hidden">
 
-      {/* BACKGROUND FULL WIDTH */}
+      {/* BACKGROUND GRADIENT */}
       <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-transparent" />
 
       {/* CONTENT */}
-      <div className="relative z-10 w-full max-w-6xl px-6 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      <div className="relative z-10 max-w-6xl w-full mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
 
         {/* TEXT */}
-        <div className="space-y-6 text-center md:text-left">
+        <div className="space-y-6">
+
           <h1 className="text-4xl md:text-5xl font-bold text-on-surface leading-tight">
             Pedí tu comida favorita <br />
             <span className="text-primary">rápido y fácil</span>
@@ -20,7 +21,7 @@ export const HeroSection = () => {
             Descubrí platos increíbles, armá tu pedido y disfrutalo en minutos.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+          <div className="flex gap-4">
             <button className="bg-primary text-on-primary px-6 py-3 rounded-lg shadow-warm hover:opacity-90 transition">
               Ver productos
             </button>
@@ -29,14 +30,29 @@ export const HeroSection = () => {
               Explorar categorías
             </button>
           </div>
+
         </div>
 
         {/* IMAGE */}
-        <div className="flex justify-center">
-          <img
-            src="/hero.png"
-            className="w-full max-w-xs sm:max-w-sm md:max-w-md drop-shadow-xl"
-          />
+        <div className="relative flex justify-center">
+
+          <div className="relative">
+
+            <img
+              src="https://images.unsplash.com/photo-1504674900247-0877df9cc836"
+              alt="Comida hero"
+              className="w-full max-w-md rounded-3xl shadow-warm object-cover hover:scale-105 transition-transform duration-700"
+            />
+
+            {/* floating badge */}
+            <div className="absolute -bottom-5 -right-5 bg-surface-container shadow-warm rounded-2xl px-4 py-3">
+              <p className="text-sm font-semibold">
+                🍔 +100 platos disponibles
+              </p>
+            </div>
+
+          </div>
+
         </div>
 
       </div>
