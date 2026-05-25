@@ -117,10 +117,13 @@ const mockProducts = [
 ];
 export const HomeStorePage = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center">
-      <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col">
 
-        <HeroSection />
+      {/* HERO FULL WIDTH */}
+      <HeroSection />
+
+      {/* CONTENT CENTERED */}
+      <div className="w-full max-w-6xl mx-auto px-6">
 
         <ProductsSection products={mockProducts} />
 
@@ -129,7 +132,7 @@ export const HomeStorePage = () => {
         <WhyChooseUsSection />
 
       </div>
-    </div>
 
+    </div>
   );
 };

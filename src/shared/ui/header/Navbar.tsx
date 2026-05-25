@@ -10,8 +10,8 @@ const links = [
     label: "Categorías",
   },
   {
-    to: "/ofertas",
-    label: "Ofertas",
+    to: "/pedidos",
+    label: "Mis pedidos",
   },
 ];
 
