@@ -1,28 +1,12 @@
-import { useAuthStore } from "../../auth/store/auth.store";
-
-type Product = {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  imagen: string;
-};
+import type { ProductoRead } from "../types/Producto";
 
 type Props = {
-  product: Product;
+  product: ProductoRead;
 };
 
 export const ProductCard = ({ product }: Props) => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-
   const handleAddToCart = () => {
-    if (!isAuthenticated) {
-      alert("Tenés que iniciar sesión para agregar al carrito");
-      return;
-    }
-
-    // acá luego llamás API carrito
-    console.log("Agregado al carrito:", product.id);
+    console.log("Agregar producto:", product.id);
   };
 
   return (
@@ -42,15 +26,15 @@ export const ProductCard = ({ product }: Props) => {
       {/* IMAGE */}
       <div className="relative h-32 sm:h-36 md:h-40 overflow-hidden">
         <img
-          src={product.imagen}
+          src={
+            product.imagenes_url ||
+            "https://via.placeholder.com/300"
+          }
           alt={product.nombre}
           className="
-            w-full
-            h-full
-            object-cover
+            w-full h-full object-cover
             group-hover:scale-110
-            transition-transform
-            duration-500
+            transition-transform duration-500
           "
         />
       </div>
@@ -67,7 +51,7 @@ export const ProductCard = ({ product }: Props) => {
 
         <div className="flex items-center justify-between mt-3 sm:mt-4">
           <span className="text-primary font-bold text-base sm:text-lg">
-            ${product.precio}
+            ${product.precio_base}
           </span>
 
           <button
@@ -80,6 +64,7 @@ export const ProductCard = ({ product }: Props) => {
               text-xs sm:text-sm
               hover:opacity-90
               transition
+              cursor-pointer
             "
           >
             Agregar
