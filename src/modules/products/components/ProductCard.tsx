@@ -1,3 +1,5 @@
+import { useAuthStore } from "../../auth/store/auth.store";
+
 type Product = {
   id: number;
   nombre: string;
@@ -11,6 +13,18 @@ type Props = {
 };
 
 export const ProductCard = ({ product }: Props) => {
+
+  const { isAuthenticated } = useAuthStore();
+
+  const handleAddToCart = () => {
+    if (!isAuthenticated()) {
+      alert("Tenés que iniciar sesión para agregar al carrito");
+      return;
+    }
+
+    // acá luego llamás API carrito
+    console.log("Agregado al carrito:", product.id);
+  };
   return (
     <article
       className="
