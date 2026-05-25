@@ -9,33 +9,20 @@ export const ProductCard = ({ product }: Props) => {
     console.log("Agregar producto:", product.id);
   };
 
+  const image =
+    product.imagenes_url && product.imagenes_url.trim() !== ""
+      ? product.imagenes_url
+      : "https://via.placeholder.com/300";
+
   return (
-    <article
-      className="
-        bg-surface-container
-        rounded-2xl
-        overflow-hidden
-        shadow-warm
-        hover:shadow-lg
-        transition
-        flex flex-col
-        group
-        w-75
-      "
-    >
+    <article className="bg-surface-container rounded-2xl overflow-hidden shadow-warm hover:shadow-lg transition flex flex-col group w-75">
+
       {/* IMAGE */}
       <div className="relative h-32 sm:h-36 md:h-40 overflow-hidden">
         <img
-          src={
-            product.imagenes_url ||
-            "https://via.placeholder.com/300"
-          }
+          src={image}
           alt={product.nombre}
-          className="
-            w-full h-full object-cover
-            group-hover:scale-110
-            transition-transform duration-500
-          "
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
       </div>
 
@@ -56,16 +43,7 @@ export const ProductCard = ({ product }: Props) => {
 
           <button
             onClick={handleAddToCart}
-            className="
-              bg-primary
-              text-on-primary
-              px-3 py-1.5
-              rounded-lg
-              text-xs sm:text-sm
-              hover:opacity-90
-              transition
-              cursor-pointer
-            "
+            className="bg-primary text-on-primary px-3 py-1.5 rounded-lg text-xs sm:text-sm hover:opacity-90 transition cursor-pointer"
           >
             Agregar
           </button>
