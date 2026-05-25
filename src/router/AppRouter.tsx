@@ -3,6 +3,7 @@ import { HomeStorePage } from '../modules/home/pages/HomeStorePage'
 import { StoreLayout } from '../shared/layouts/StoreLayout'
 import { CategoriesPage } from '../modules/categories/pages/CategoriesPage'
 import { CartPage } from '../modules/cart/pages/CartPage'
+import { OrdersPage } from '../modules/orders/pages/OrdersPage'
 
 export const AppRouter = () => {
   return (
@@ -17,6 +18,10 @@ export const AppRouter = () => {
         </Route>
         <Route element={<StoreLayout />}>
           <Route path="/carrito" element={<CartPage/>} />
+        </Route>
+      
+      <Route element={<StoreLayout />}>
+          <Route path="/pedidos" element={<OrdersPage/>} />
         </Route>
       </Routes>
     </BrowserRouter>

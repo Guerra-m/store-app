@@ -1,0 +1,37 @@
+import type {Order } from "../../modules/orders/types/Order";
+import { http } from "../api/http";
+
+export const ordersApi = {
+  // LISTAR PEDIDOS
+  getOrders: async (offset = 0, limit = 20): Promise<Order[]> => {
+    const res = await http.get("/api/v1/pedidos", {
+      params: { offset, limit },
+    });
+    return res.data;
+  },
+
+  // OBTENER DETALLE
+  getOrderById: async (id: number): Promise<Order> => {
+    const res = await http.get(`/api/v1/pedidos/${id}`);
+    return res.data;
+  },
+
+  // AVANZAR ESTADO
+  advanceStatus: async (
+    id: number,
+    estado_hacia: string,
+    motivo?: string
+  ) => {
+    const res = await http.post(`/api/v1/pedidos/${id}/avanzar`, {
+      estado_hacia,
+      motivo,
+    });
+    return res.data;
+  },
+
+  // HISTORIAL
+  getHistory: async (id: number) => {
+    const res = await http.get(`/api/v1/pedidos/${id}/historial`);
+    return res.data;
+  },
+};
