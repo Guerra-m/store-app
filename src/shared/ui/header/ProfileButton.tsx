@@ -23,6 +23,7 @@ export const ProfileButton = () => {
         hover:bg-surface-container
 
         transition-all
+        cursor-pointer
       "
     >
 

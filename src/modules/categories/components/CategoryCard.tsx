@@ -1,7 +1,10 @@
-import type { Category } from "../types/Category";
-
 type Props = {
-  category: Category;
+  category: {
+    id: number;
+    nombre: string;
+    descripcion: string;
+    imagen: string;
+  };
 };
 
 export const CategoryCard = ({ category }: Props) => {
@@ -9,41 +12,76 @@ export const CategoryCard = ({ category }: Props) => {
   return (
 
     <article
-      className="
-        group
+  className="
+    relative
+    overflow-hidden
 
-        flex
-        flex-col
-        justify-between
+    rounded-3xl
 
-        rounded-2xl
+    h-full
 
-        border
-        border-outline-variant
+    shadow-warm
 
-        bg-surface-container-low
+    group
+    cursor-pointer
+  "
+>
 
-        p-6
+      {/* BACKGROUND IMAGE */}
+      <img
+        src={category.imagen}
+        alt={category.nombre}
+        className="
+          absolute
+          inset-0
 
-        shadow-warm
+          w-full
+          h-full
 
-        transition-all
-        duration-300
+          object-cover
 
-        hover:-translate-y-1
-        hover:shadow-lg
-      "
-    >
+          transition-transform
+          duration-500
+
+          group-hover:scale-110
+        "
+      />
+
+      {/* DARK OVERLAY */}
+      <div
+        className="
+          absolute
+          inset-0
+
+          bg-gradient-to-t
+          from-black/75
+          via-black/30
+          to-transparent
+        "
+      />
 
       {/* CONTENT */}
-      <div className="space-y-3">
+      <div
+        className="
+          relative
+          z-10
+
+          flex
+          flex-col
+          justify-end
+
+          h-full
+
+          p-6
+        "
+      >
 
         <h2
           className="
             text-2xl
             font-bold
 
-            text-on-surface
+            text-white
             font-store
           "
         >
@@ -52,19 +90,18 @@ export const CategoryCard = ({ category }: Props) => {
 
         <p
           className="
+            mt-2
+
             text-sm
             leading-6
 
-            text-on-surface-variant
+            text-white/90
             font-admin
           "
         >
           {category.descripcion}
         </p>
-
-      </div>
-
-      {/* ACTION */}
+{/* ACTION */}
       <button
         className="
           mt-8
@@ -73,7 +110,7 @@ export const CategoryCard = ({ category }: Props) => {
           items-center
           gap-2
 
-          text-primary
+          text-white
           font-admin
           font-semibold
 
@@ -88,6 +125,8 @@ export const CategoryCard = ({ category }: Props) => {
           arrow_forward
         </span>
       </button>
+      </div>
+      
 
     </article>
   );

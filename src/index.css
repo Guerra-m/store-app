@@ -5,7 +5,7 @@
 @theme {
   --color-primary: #9f3d00;
   --color-on-primary: #ffffff;
-
+  --color-neutral: #fff9f2;
   --color-surface: #fef8f1;
   --color-surface-container: #f3ede6;
   --color-surface-container-low: #f9f3ec;
@@ -38,4 +38,12 @@ body {
   background-color: var(--color-surface);
   color: var(--color-on-surface);
   font-family: var(--font-store);
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
