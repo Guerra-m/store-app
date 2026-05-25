@@ -1,17 +1,33 @@
 import { useEffect, useState } from "react";
 import { ProductCard } from "../../products/components/ProductCard";
+import { getAvailableProducts } from "../../../shared/api/producto.api";
+import type { ProductoRead } from "../../products/types/Producto";
 
 type Props = {
-  products: any[];
+
 };
 
-export const ProductsSection = ({ products }: Props) => {
+export const ProductsSection = () => {
+  const [products, setProducts] = useState<ProductoRead[]>([]);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const data = await getAvailableProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Error cargando productos:", error);
+      }
+    };
+
+    load();
+  }, []);
+
   const getVisibleItems = () => {
     if (typeof window === "undefined") return 1;
-
-    if (window.innerWidth < 640) return 1; // mobile
-    if (window.innerWidth < 1024) return 2; // tablet
-    return 3; // desktop
+    if (window.innerWidth < 640) return 1;
+    if (window.innerWidth < 1024) return 2;
+    return 3;
   };
 
   const [visibleItems, setVisibleItems] = useState(getVisibleItems());
@@ -19,15 +35,9 @@ export const ProductsSection = ({ products }: Props) => {
 
   const maxIndex = Math.max(products.length - visibleItems, 0);
 
-  const next = () => {
-    setIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
-  };
+  const next = () => setIndex((p) => (p >= maxIndex ? 0 : p + 1));
+  const prev = () => setIndex((p) => (p <= 0 ? maxIndex : p - 1));
 
-  const prev = () => {
-    setIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
-  };
-
-  // resize
   useEffect(() => {
     const handleResize = () => {
       setVisibleItems(getVisibleItems());
@@ -40,17 +50,13 @@ export const ProductsSection = ({ products }: Props) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // autoplay
   useEffect(() => {
-    const interval = setInterval(() => {
-      next();
-    }, 4000);
-
+    const interval = setInterval(next, 4000);
     return () => clearInterval(interval);
   }, [visibleItems, products.length]);
 
   return (
-    <section className="py-16 px-6 max-w-300">
+    <section className="py-16 px-6 max-w-300 mx-auto">
       {/* HEADER */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold">
@@ -60,14 +66,14 @@ export const ProductsSection = ({ products }: Props) => {
         <div className="flex gap-2">
           <button
             onClick={prev}
-            className="w-10 h-10 rounded-lg bg-surface-container hover:bg-surface-container-high transition"
+            className="w-10 h-10 rounded-lg bg-surface-container hover:bg-surface-container-high"
           >
             ←
           </button>
 
           <button
             onClick={next}
-            className="w-10 h-10 rounded-lg bg-surface-container hover:bg-surface-container-high transition"
+            className="w-10 h-10 rounded-lg bg-surface-container hover:bg-surface-container-high"
           >
             →
           </button>
@@ -76,8 +82,6 @@ export const ProductsSection = ({ products }: Props) => {
 
       {/* VIEWPORT */}
       <div className="overflow-hidden w-full">
-        
-        {/* TRACK */}
         <div
           className="flex transition-transform duration-700 ease-in-out"
           style={{
@@ -88,15 +92,12 @@ export const ProductsSection = ({ products }: Props) => {
             <div
               key={product.id}
               className="px-3 shrink-0"
-              style={{
-                width: `${100 / visibleItems}%`,
-              }}
+              style={{ width: `${100 / visibleItems}%` }}
             >
               <ProductCard product={product} />
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );
