@@ -4,6 +4,7 @@ import { StoreLayout } from '../shared/layouts/StoreLayout'
 import { CategoriesPage } from '../modules/categories/pages/CategoriesPage'
 import { CartPage } from '../modules/cart/pages/CartPage'
 import { OrdersPage } from '../modules/orders/pages/OrdersPage'
+import { ProfilePage } from '../modules/profile/pages/profilePage'
 
 export const AppRouter = () => {
   return (
@@ -20,8 +21,14 @@ export const AppRouter = () => {
           <Route path="/carrito" element={<CartPage/>} />
         </Route>
       
-      <Route element={<StoreLayout />}>
+        <Route element={<StoreLayout />}>
           <Route path="/pedidos" element={<OrdersPage/>} />
+        </Route>
+        <Route element={<StoreLayout />}>
+          <Route path="/pedidos" element={<OrdersPage/>} />
+        </Route>
+        <Route element={<StoreLayout />}>
+          <Route path="/perfil" element={<ProfilePage/>} />
         </Route>
       </Routes>
     </BrowserRouter>
