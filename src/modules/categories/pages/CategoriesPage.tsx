@@ -5,16 +5,38 @@ const categories = [
     id: 1,
     nombre: "Panadería",
     descripcion: "Pan recién horneado todos los días",
+    imagen: "https://images.unsplash.com/photo-1509440159596-0249088772ff",
+    featured: true,
   },
   {
     id: 2,
-    nombre: "Carnes",
-    descripcion: "Cortes premium seleccionados",
+    nombre: "Frutas y Verduras",
+    descripcion: "Productos frescos seleccionados del día",
+    imagen: "https://images.unsplash.com/photo-1542838132-92c53300491e",
   },
   {
     id: 3,
-    nombre: "Verduras",
-    descripcion: "Productos frescos del día",
+    nombre: "Lácteos y Huevos",
+    descripcion: "Lácteos frescos y huevos de calidad",
+    imagen: "https://images.unsplash.com/photo-1628088062854-d1870b4553da",
+  },
+  {
+    id: 4,
+    nombre: "Carnes y Aves",
+    descripcion: "Cortes premium y selección de aves",
+    imagen: "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f",
+  },
+  {
+    id: 5,
+    nombre: "Despensa",
+    descripcion: "Productos básicos y envasados",
+    imagen: "https://images.unsplash.com/photo-1586201375761-83865001e31c",
+  },
+  {
+    id: 6,
+    nombre: "Bebidas",
+    descripcion: "Gaseosas, jugos y bebidas variadas",
+    imagen: "https://images.unsplash.com/photo-1528823872057-9c018a7a7553",
   },
 ];
 
@@ -27,6 +49,7 @@ export const CategoriesPage = () => {
         space-y-12
         px-10
         py-12
+        
       "
     >
 
@@ -64,25 +87,29 @@ export const CategoriesPage = () => {
 
       {/* GRID */}
       <div
-        className="
-          grid
-          gap-6
+  className="
+    max-w-7xl
+    mx-auto
 
-          sm:grid-cols-2
-          lg:grid-cols-3
-          xl:grid-cols-4
-          
-        "
-      >
+    grid
+    gap-6
 
-        {categories.map((category) => (
+    grid-cols-1
+    sm:grid-cols-2
+    lg:grid-cols-3
 
-          <CategoryCard
-            key={category.id}
-            category={category}
-          />
+    auto-rows-[200px]
+  "
+>
+{categories.map((category) => (
+  <div
+    key={category.id}
+    className={category.featured ? "sm:row-span-2" : ""}
+  >
+    <CategoryCard category={category} />
+  </div>
+))}
 
-        ))}
 
       </div>
 
