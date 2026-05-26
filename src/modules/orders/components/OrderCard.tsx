@@ -31,6 +31,9 @@ const statusMap: Record<string, { label: string; style: string }> = {
   },
 };
 
+const FALLBACK_IMG =
+  "https://images.unsplash.com/photo-1542838132-92c53300491e";
+
 export const OrderCard = ({ order }: Props) => {
   const status = statusMap[order.estado_codigo] ?? {
     label: order.estado_codigo,
@@ -60,29 +63,35 @@ export const OrderCard = ({ order }: Props) => {
 
       {/* ITEMS */}
       <div className="flex gap-3 overflow-x-auto pb-2">
-        {order.detalles?.map((item) => (
-          <div
-            key={item.id}
-            className="min-w-[130px] bg-surface rounded-xl p-2 flex flex-col gap-2"
-          >
 
-            {item.imagen && (
+        {order.detalles?.map((item) => {
+          const img =
+            item.imagen && item.imagen.trim() !== ""
+              ? item.imagen
+              : FALLBACK_IMG;
+
+          return (
+            <div
+              key={item.id}
+              className="min-w-[130px] bg-surface rounded-xl p-2 flex flex-col gap-2"
+            >
               <img
-                src={item.imagen}
+                src={img}
+                alt={item.nombre}
                 className="w-full h-16 object-cover rounded-lg"
               />
-            )}
 
-            <p className="text-xs font-semibold text-on-surface">
-              {item.nombre}
-            </p>
+              <p className="text-xs font-semibold text-on-surface">
+                {item.nombre}
+              </p>
 
-            <p className="text-xs text-on-surface-variant">
-              x{item.cantidad}
-            </p>
+              <p className="text-xs text-on-surface-variant">
+                x{item.cantidad}
+              </p>
+            </div>
+          );
+        })}
 
-          </div>
-        ))}
       </div>
 
       {/* FOOTER */}
@@ -103,7 +112,6 @@ export const OrderCard = ({ order }: Props) => {
         </button>
 
       </div>
-
     </article>
   );
 };
