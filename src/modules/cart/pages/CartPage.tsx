@@ -1,49 +1,60 @@
+import { useEffect, useState } from "react";
 import { CartItem } from "../components/CartItem";
 import { CartSummary } from "../components/CartSummary";
-
-const cartItems = [
-  {
-    id: 1,
-    name: "Tomates orgánicos de rama",
-    description: "500g | Origen: Huerto Local",
-    quantity: 2,
-    price: 3.99,
-    image:
-      "https://imgs.search.brave.com/Eh75c6i8_jHQHPVSUD3Uv_dkQq3dpkCnV88PqrqFgLY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cGhvdG9zLWdyYXR1/aXRlL3Z1ZS1sYXRl/cmFsZS10b21hdGVz/LWphdW5lcy1yb3Vn/ZXNfMTQxNzkzLTEy/MDMzLmpwZz9zZW10/PWFpc19oeWJyaWQm/dz03NDAmcT04MA",
-  },
-  {
-    id: 2,
-    name: "Manzanas verdes",
-    description: "1kg | Importadas",
-    quantity: 1,
-    price: 4.5,
-    image:
-      "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce",
-  },
-  {
-    id: 3,
-    name: "Leche entera",
-    description: "1L | Marca local",
-    quantity: 3,
-    price: 2.2,
-    image:
-      "https://images.unsplash.com/photo-1563636619-e9143da7973b",
-  },
-];
+import { ordersApi } from "../../../shared/api/orders.api";
+import type { Order, OrderStatus } from "../../orders/types/Order";
 
 export const CartPage = () => {
+  const [order, setOrder] = useState<Order | null>(null);
 
-  const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const orders = await ordersApi.getOrders(0, 20);
+
+        const active = orders.find(
+          (o) => o.estado_codigo === "PENDIENTE" as OrderStatus
+        );
+
+        if (!active) return;
+
+        const fullOrder = await ordersApi.getOrderById(active.id);
+
+        setOrder(fullOrder);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    load();
+  }, []);
+
+  if (!order) {
+    return (
+      <div className="max-w-6xl mx-auto px-6 py-10">
+        <h1 className="text-3xl font-bold text-primary mb-8">
+          Tu carrito
+        </h1>
+
+        <p className="text-on-surface-variant">
+          No tenés productos en el carrito.
+        </p>
+      </div>
+    );
+  }
+
+  const items = order.detalles ?? [];
+
+  const subtotal = items.reduce(
+    (acc: number, item: any) =>
+      acc + (item.precio_unitario ?? 0) * (item.cantidad ?? 0),
     0
   );
 
   return (
-
     <div className="max-w-6xl mx-auto px-6 py-10">
 
-      {/* TITLE */}
-      <h1 className="text-3xl font-bold text-primary font-store mb-8">
+      <h1 className="text-3xl font-bold text-primary mb-8">
         Tu carrito
       </h1>
 
@@ -52,14 +63,19 @@ export const CartPage = () => {
         {/* ITEMS */}
         <section className="lg:col-span-2 space-y-4">
 
-          {cartItems.map((item) => (
+          {items.map((item: any, index: number) => (
             <CartItem
-              key={item.id}
-              name={item.name}
-              description={item.description}
-              quantity={item.quantity}
-              price={item.price}
-              image={item.image}
+              key={item.id ?? `${item.producto?.nombre}-${index}`}
+
+              name={item.producto?.nombre ?? "Producto"}
+              description={item.producto?.descripcion ?? ""}
+              quantity={item.cantidad ?? 0}
+              price={item.precio_unitario ?? 0}
+              image={
+                item.producto?.imagenes_url ||
+                "https://images.unsplash.com/photo-1542838132-92c53300491e"
+              }
+
               onIncrease={() => {}}
               onDecrease={() => {}}
               onDelete={() => {}}
@@ -68,12 +84,10 @@ export const CartPage = () => {
 
         </section>
 
-        {/* SUMMARY COMPONENT */}
+        {/* SUMMARY */}
         <CartSummary subtotal={subtotal} />
 
       </div>
-
     </div>
-
   );
 };

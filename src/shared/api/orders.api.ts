@@ -34,4 +34,13 @@ export const ordersApi = {
     const res = await http.get(`/api/v1/pedidos/${id}/historial`);
     return res.data;
   },
+  getActiveOrder: async (): Promise<Order> => {
+  const res = await http.get("/api/v1/pedidos?limit=50");
+  return res.data;
+},
+
+getOrderDetail: async (id: number) => {
+  const res = await http.get(`/api/v1/pedidos/${id}`);
+  return res.data;
+},
 };
