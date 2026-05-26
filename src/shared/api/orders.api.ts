@@ -1,6 +1,16 @@
 import type {Order } from "../../modules/orders/types/Order";
 import { http } from "../api/http";
 
+type CreateOrderDto = {
+  usuario_id: number;
+  detalles: {
+    producto_id: number;
+    cantidad: number;
+    precio_unitario: number;
+  }[];
+  total: number;
+};
+
 export const ordersApi = {
   // LISTAR PEDIDOS
   getOrders: async (offset = 0, limit = 20): Promise<Order[]> => {
@@ -34,13 +44,19 @@ export const ordersApi = {
     const res = await http.get(`/api/v1/pedidos/${id}/historial`);
     return res.data;
   },
-  getActiveOrder: async (): Promise<Order> => {
-  const res = await http.get("/api/v1/pedidos?limit=50");
-  return res.data;
-},
 
-getOrderDetail: async (id: number) => {
-  const res = await http.get(`/api/v1/pedidos/${id}`);
-  return res.data;
-},
+  getActiveOrder: async (): Promise<Order> => {
+    const res = await http.get("/api/v1/pedidos?limit=50");
+    return res.data;
+  },
+
+  getOrderDetail: async (id: number) => {
+    const res = await http.get(`/api/v1/pedidos/${id}`);
+    return res.data;
+  },
+
+    createOrder: async (payload) => {
+    const res = await http.post("/api/v1/pedidos", payload);
+    return res.data;
+  },
 };
