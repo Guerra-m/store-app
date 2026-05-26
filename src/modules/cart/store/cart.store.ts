@@ -9,9 +9,13 @@ type CartItem = {
 
 type CartStore = {
   items: CartItem[];
+
   addItem: (product: ProductoRead) => void;
   removeItem: (id: number) => void;
+  decreaseItem: (id: number) => void;
   clearCart: () => void;
+
+  getTotal: () => number;
 };
 
 export const useCartStore = create<CartStore>()(
@@ -43,10 +47,29 @@ export const useCartStore = create<CartStore>()(
           items: state.items.filter((i) => i.product.id !== id),
         })),
 
+      // ➖ bajar cantidad
+      decreaseItem: (id) =>
+        set((state) => ({
+          items: state.items
+            .map((i) =>
+              i.product.id === id
+                ? { ...i, quantity: i.quantity - 1 }
+                : i
+            )
+            .filter((i) => i.quantity > 0), 
+        })),
+
       clearCart: () => set({ items: [] }),
+
+      getTotal: () => {
+        return get().items.reduce(
+          (acc, item) => acc + item.product.precio_base * item.quantity,
+          0
+        );
+      },
     }),
     {
-      name: "cart-storage", // 👈 clave en localStorage
+      name: "cart-storage",
     }
   )
 );
