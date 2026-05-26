@@ -4,7 +4,7 @@ import { userApi } from "../../../shared/api/user.api";
 import { useAuthStore } from "../store/auth.store";
 
 export const AuthModal = () => {
-  const { open, closeModal } = useAuthModalStore();
+  const { open, message, closeModal } = useAuthModalStore();
 
   const setUser = useAuthStore((state) => state.setUser);
   const setAuth = useAuthStore((state) => state.setAuth);
@@ -21,7 +21,7 @@ export const AuthModal = () => {
     setError(null);
 
     try {
-     
+
       await userApi.login(email, password);
 
       const user = await userApi.me();
@@ -29,7 +29,7 @@ export const AuthModal = () => {
       setUser(user);
       setAuth(true);
 
-     
+
       closeModal();
     } catch (err: any) {
       setError(err?.response?.data?.detail || "Error al iniciar sesión");
@@ -39,12 +39,18 @@ export const AuthModal = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50">
+    <div className="fixed inset-0 z-999 flex items-center justify-center bg-black/50">
       <div className="w-full max-w-md bg-surface rounded-2xl p-6 shadow-warm">
 
         <h2 className="text-xl font-bold mb-4">
           Iniciar sesión
         </h2>
+
+        {message && (
+          <p className="mb-3 text-sm text-on-surface-variant">
+            {message}
+          </p>
+        )}
 
         <input
           placeholder="Email"

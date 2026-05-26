@@ -1,22 +1,28 @@
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../../../modules/auth/store/auth.store";
 import { useAuthModalStore } from "../../../modules/auth/store/auth.modal.store";
+import { useCartStore } from "../../../modules/cart/store/cart.store";
 
 export const CartButton = () => {
-  const { isAuthenticated } = useAuthStore();
-  const { openModal } = useAuthModalStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const openModal = useAuthModalStore((state) => state.openModal);
+  const items = useCartStore((state) => state.items);
+
+  const totalItems = items.reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  );
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!isAuthenticated) {
-      e.preventDefault(); // evita navegar a /carrito
-      openModal();        // abre modal de login
-      return;
+      e.preventDefault();
+      openModal("Debes iniciar sesión para ver tu carrito");
     }
   };
 
   return (
     <Link to="/carrito" onClick={handleClick}>
-      <button
+      <div
         className="
           relative
           flex items-center justify-center
@@ -34,21 +40,23 @@ export const CartButton = () => {
           shopping_cart
         </span>
 
-        <span
-          className="
-            absolute -top-1 -right-1
-            w-5 h-5
-            rounded-full
-            bg-error
-            text-[10px]
-            font-bold
-            text-white
-            flex items-center justify-center
-          "
-        >
-          2
-        </span>
-      </button>
+        {totalItems > 0 && (
+          <span
+            className="
+              absolute -top-1 -right-1
+              w-5 h-5
+              rounded-full
+              bg-error
+              text-[10px]
+              font-bold
+              text-white
+              flex items-center justify-center
+            "
+          >
+            {totalItems}
+          </span>
+        )}
+      </div>
     </Link>
   );
 };

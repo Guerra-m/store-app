@@ -1,3 +1,6 @@
+import { useAuthStore } from "../../auth/store/auth.store";
+import { useCartStore } from "../../cart/store/cart.store";
+import { useAuthModalStore } from "../../auth/store/auth.modal.store";
 import type { ProductoRead } from "../types/Producto";
 
 type Props = {
@@ -5,9 +8,18 @@ type Props = {
 };
 
 export const ProductCard = ({ product }: Props) => {
-  const handleAddToCart = () => {
-    console.log("Agregar producto:", product.id);
-  };
+  const user = useAuthStore((state) => state.user);
+  const addItem = useCartStore((state) => state.addItem);
+  const openModal = useAuthModalStore((state) => state.openModal);
+
+ const handleAddToCart = () => {
+  if (!user) {
+    openModal();
+    return;
+  }
+
+  addItem(product);
+};
 
   const image =
     product.imagenes_url && product.imagenes_url.trim() !== ""
@@ -16,8 +28,6 @@ export const ProductCard = ({ product }: Props) => {
 
   return (
     <article className="bg-surface-container rounded-2xl overflow-hidden shadow-warm hover:shadow-lg transition flex flex-col group w-75">
-
-      {/* IMAGE */}
       <div className="relative h-32 sm:h-36 md:h-40 overflow-hidden">
         <img
           src={image}
@@ -26,7 +36,6 @@ export const ProductCard = ({ product }: Props) => {
         />
       </div>
 
-      {/* CONTENT */}
       <div className="p-3 sm:p-4 flex flex-col flex-1">
         <h3 className="text-sm sm:text-base md:text-lg font-bold text-on-surface">
           {product.nombre}

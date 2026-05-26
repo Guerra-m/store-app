@@ -2,13 +2,18 @@ import { create } from "zustand";
 
 type AuthModalState = {
   open: boolean;
-  openModal: () => void;
+  message?: string;
+  openModal: (message?: string) => void;
   closeModal: () => void;
 };
 
 export const useAuthModalStore = create<AuthModalState>((set) => ({
   open: false,
+  message: "",
 
-  openModal: () => set({ open: true }),
-  closeModal: () => set({ open: false }),
+  openModal: (message = "") =>
+    set({ open: true, message }),
+
+  closeModal: () =>
+    set({ open: false, message: "" }),
 }));
