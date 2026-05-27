@@ -10,11 +10,13 @@ type Props = {
 export const ProductCard = ({ product }: Props) => {
   const user = useAuthStore((state) => state.user);
   const addItem = useCartStore((state) => state.addItem);
-  const openModal = useAuthModalStore((state) => state.openModal);
+  const openLogin = useAuthModalStore(
+  (state) => state.openLogin
+);
 
  const handleAddToCart = () => {
   if (!user) {
-    openModal();
+    openLogin("Debes iniciar sesión para agregar productos");
     return;
   }
 
