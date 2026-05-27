@@ -5,7 +5,9 @@ import { useCartStore } from "../../../modules/cart/store/cart.store";
 
 export const CartButton = () => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const openModal = useAuthModalStore((state) => state.openModal);
+  const openLogin = useAuthModalStore(
+  (state) => state.openLogin
+);
   const items = useCartStore((state) => state.items);
 
   const totalItems = items.reduce(
@@ -16,7 +18,7 @@ export const CartButton = () => {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!isAuthenticated) {
       e.preventDefault();
-      openModal("Debes iniciar sesión para ver tu carrito");
+      openLogin("Debes iniciar sesión para ver tu carrito");
     }
   };
 

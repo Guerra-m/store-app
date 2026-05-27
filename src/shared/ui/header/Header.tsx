@@ -5,8 +5,14 @@ import { SearchBar } from "./SearchBar";
 import { ProfileButton } from "./ProfileButton";
 import { CartButton } from "./CartButton";
 
+import { useAuthStore } from "../../../modules/auth/store/auth.store";
+
 export const Header = () => {
   const navigate = useNavigate();
+
+  const isAuthenticated = useAuthStore(
+    (state) => state.isAuthenticated
+  );
 
   const handleOpenProfile = () => {
     navigate("/perfil");
@@ -32,7 +38,9 @@ export const Header = () => {
       <div className="flex items-center gap-4">
         <SearchBar />
 
-        <ProfileButton onClick={handleOpenProfile} />
+        {isAuthenticated && (
+          <ProfileButton onClick={handleOpenProfile} />
+        )}
 
         <CartButton />
       </div>

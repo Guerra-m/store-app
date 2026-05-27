@@ -4,7 +4,13 @@ import { userApi } from "../../../shared/api/user.api";
 import { useAuthStore } from "../store/auth.store";
 
 export const AuthModal = () => {
-  const { open, message, closeModal } = useAuthModalStore();
+  const {
+  open,
+  view,
+  message,
+  closeModal,
+  openRegister,
+} = useAuthModalStore();
 
   const setUser = useAuthStore((state) => state.setUser);
   const setAuth = useAuthStore((state) => state.setAuth);
@@ -14,7 +20,7 @@ export const AuthModal = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  if (!open) return null;
+  if (!open || view !== "login") return null;
 
   const handleLogin = async () => {
     setLoading(true);
@@ -81,6 +87,20 @@ export const AuthModal = () => {
         >
           Cerrar
         </button>
+        <div className="mt-4 text-center">
+
+  <p className="text-sm text-on-surface-variant">
+    ¿No tenés cuenta?
+  </p>
+
+  <button
+    onClick={() => openRegister()}
+    className="text-primary font-semibold hover:underline"
+  >
+    Registrate
+  </button>
+
+</div>
       </div>
     </div>
   );

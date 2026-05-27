@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useAuthStore } from "../../../modules/auth/store/auth.store";
 
 const links = [
   {
@@ -9,13 +10,13 @@ const links = [
     to: "/categorias",
     label: "Categorías",
   },
-  {
-    to: "/pedidos",
-    label: "Mis pedidos",
-  },
 ];
 
 export const Navbar = () => {
+
+  const isAuthenticated = useAuthStore(
+    (state) => state.isAuthenticated
+  );
 
   return (
 
@@ -46,6 +47,30 @@ export const Navbar = () => {
         </NavLink>
 
       ))}
+
+      {/* SOLO SI ESTÁ LOGEADO */}
+      {isAuthenticated && (
+        <NavLink
+          to="/pedidos"
+          className={({ isActive }) =>
+            `
+              text-sm
+              font-admin
+              font-semibold
+
+              transition-colors
+
+              ${
+                isActive
+                  ? "text-primary"
+                  : "text-on-surface hover:text-primary"
+              }
+            `
+          }
+        >
+          Mis pedidos
+        </NavLink>
+      )}
 
     </nav>
   );
