@@ -1,7 +1,11 @@
-import { AppRouter } from './router/AppRouter'
+import { AppRouter } from "./router/AppRouter";
+
+import { useAuthInitializer } from "./modules/auth/hooks/useAuthInitializer";
 
 const App = () => {
-  return <AppRouter />
-}
+  useAuthInitializer();
 
-export default App
+  return <AppRouter />;
+};
+
+export default App;
