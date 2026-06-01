@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+
 import type { ProductoRead } from "../../products/types/Producto";
 
 type CartItem = {
@@ -25,51 +26,73 @@ export const useCartStore = create<CartStore>()(
 
       addItem: (product) => {
         const items = get().items;
-        const exists = items.find((i) => i.product.id === product.id);
+
+        const exists = items.find(
+          (i) => i.product.id === product.id
+        );
 
         if (exists) {
           set({
             items: items.map((i) =>
               i.product.id === product.id
-                ? { ...i, quantity: i.quantity + 1 }
+                ? {
+                    ...i,
+                    quantity: i.quantity + 1,
+                  }
                 : i
             ),
           });
         } else {
           set({
-            items: [...items, { product, quantity: 1 }],
+            items: [
+              ...items,
+              {
+                product,
+                quantity: 1,
+              },
+            ],
           });
         }
       },
 
       removeItem: (id) =>
         set((state) => ({
-          items: state.items.filter((i) => i.product.id !== id),
+          items: state.items.filter(
+            (i) => i.product.id !== id
+          ),
         })),
 
-      // ➖ bajar cantidad
       decreaseItem: (id) =>
         set((state) => ({
           items: state.items
             .map((i) =>
               i.product.id === id
-                ? { ...i, quantity: i.quantity - 1 }
+                ? {
+                    ...i,
+                    quantity: i.quantity - 1,
+                  }
                 : i
             )
-            .filter((i) => i.quantity > 0), 
+            .filter((i) => i.quantity > 0),
         })),
 
-      clearCart: () => set({ items: [] }),
+      clearCart: () =>
+        set({
+          items: [],
+        }),
 
       getTotal: () => {
         return get().items.reduce(
-          (acc, item) => acc + item.product.precio_base * item.quantity,
+          (acc, item) =>
+            acc +
+            item.product.precio_base *
+              item.quantity,
           0
         );
       },
     }),
     {
-      name: "cart-storage",
+      name: "store-cart-storage",
     }
   )
 );

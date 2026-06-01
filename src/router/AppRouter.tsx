@@ -15,20 +15,20 @@ export const AppRouter = () => {
           <Route path="/" element={<HomeStorePage />} />
         </Route>
         <Route element={<StoreLayout />}>
-          <Route path="/categorias" element={<CategoriesPage/>} />
+          <Route path="/categorias" element={<CategoriesPage />} />
         </Route>
         <Route element={<StoreLayout />}>
-          <Route path="/carrito" element={<CartPage/>} />
+          <Route path="/carrito" element={<CartPage />} />
         </Route>
-      
+
         <Route element={<StoreLayout />}>
-          <Route path="/pedidos" element={<OrdersPage/>} />
-        </Route>
-        <Route element={<StoreLayout />}>
-          <Route path="/pedidos" element={<OrdersPage/>} />
+          <Route path="/pedidos" element={<OrdersPage />} />
         </Route>
         <Route element={<StoreLayout />}>
-          <Route path="/perfil" element={<ProfilePage/>} />
+          <Route path="/pedidos" element={<OrdersPage />} />
+        </Route>
+        <Route element={<StoreLayout />}>
+          <Route path="/perfil" element={<ProfilePage />} />
         </Route>
       </Routes>
     </BrowserRouter>
