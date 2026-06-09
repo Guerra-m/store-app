@@ -1,5 +1,5 @@
 import type { CategoriaRead } from "../types/Categories";
-
+import { useNavigate } from "react-router-dom";
 type Props = {
   category: CategoriaRead;
 };
@@ -9,9 +9,10 @@ const FALLBACK_IMAGE =
 
 export const CategoryCard = ({ category }: Props) => {
   const image = category.imagen_url || FALLBACK_IMAGE;
-
+  const navigate = useNavigate();
   return (
     <article
+      onClick={() => navigate(`/categorias/${category.id}`)}
       className="
         relative
         overflow-hidden
@@ -32,7 +33,7 @@ export const CategoryCard = ({ category }: Props) => {
         "
       />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/30 to-transparent" />
 
       <div className="relative z-10 flex flex-col justify-end h-full p-6">
         <h2 className="text-2xl font-bold text-white">

@@ -29,7 +29,7 @@ export const ProductCard = ({ product }: Props) => {
       : "https://via.placeholder.com/300";
 
   return (
-    <article className="bg-surface-container rounded-2xl overflow-hidden shadow-warm hover:shadow-lg transition flex flex-col group w-75">
+    <article className="bg-surface-container rounded-2xl overflow-hidden shadow-warm hover:shadow-lg transition flex flex-col group w-full">
       <div className="relative h-32 sm:h-36 md:h-40 overflow-hidden">
         <img
           src={image}

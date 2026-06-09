@@ -32,7 +32,7 @@ export const HeroSection = ({
             {/* PRODUCTS → SCROLL */}
             <button
               onClick={onScrollProducts}
-              className="bg-primary text-on-primary px-6 py-3 rounded-lg shadow-warm hover:opacity-90 transition"
+              className="bg-primary text-on-primary px-6 py-3 rounded-lg shadow-warm hover:opacity-90 transition cursor-pointer"
             >
               Ver productos
             </button>
@@ -40,7 +40,7 @@ export const HeroSection = ({
             {/* CATEGORIES → ROUTE */}
             <button
               onClick={onGoToCategories}
-              className="border border-outline px-6 py-3 rounded-lg hover:bg-surface-container transition"
+              className="border border-outline px-6 py-3 rounded-lg hover:bg-surface-container transition cursor-pointer"
             >
               Explorar categorías
             </button>

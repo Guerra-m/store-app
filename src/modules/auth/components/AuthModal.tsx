@@ -76,14 +76,14 @@ export const AuthModal = () => {
         <button
           onClick={handleLogin}
           disabled={loading}
-          className="w-full bg-primary text-on-primary py-3 rounded-lg"
+          className="w-full bg-primary text-on-primary py-3 rounded-lg cursor-pointer"
         >
           {loading ? "Ingresando..." : "Entrar"}
         </button>
 
         <button
           onClick={closeModal}
-          className="mt-3 w-full text-sm text-on-surface-variant"
+          className="mt-3 w-full text-sm text-on-surface-variant cursor-pointer"
         >
           Cerrar
         </button>
@@ -95,7 +95,7 @@ export const AuthModal = () => {
 
   <button
     onClick={() => openRegister()}
-    className="text-primary font-semibold hover:underline"
+    className="text-primary font-semibold hover:underline cursor-pointer"
   >
     Registrate
   </button>
