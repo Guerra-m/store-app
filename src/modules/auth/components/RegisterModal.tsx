@@ -128,27 +128,27 @@ export const RegisterModal = () => {
         <button
           onClick={handleRegister}
           disabled={loading}
-          className="mt-4 w-full bg-primary text-on-primary py-3 rounded-lg"
+          className="mt-4 w-full bg-primary text-on-primary py-3 rounded-lg cursor-pointer"
         >
           {loading ? "Creando cuenta..." : "Registrarse"}
         </button>
 
         <button
           onClick={closeModal}
-          className="mt-3 w-full text-sm text-on-surface-variant"
+          className="mt-3 w-full text-sm text-on-surface-variant cursor-pointer" 
         >
           Cerrar
         </button>
 
         <div className="mt-4 text-center">
 
-  <p className="text-sm text-on-surface-variant">
+  <p className="text-sm text-on-surface-variant ">
     ¿Ya tenés cuenta?
   </p>
 
   <button
     onClick={() => useAuthModalStore.getState().openLogin()}
-    className="text-primary font-semibold hover:underline"
+    className="text-primary font-semibold hover:underline cursor-pointer"
   >
     Iniciá sesión
   </button>
