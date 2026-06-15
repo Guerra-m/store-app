@@ -32,14 +32,18 @@ export const OrderModal = ({ order, onClose }: Props) => {
               key={item.id}
               className="flex items-center gap-3"
             >
-              <img
-                src={
-                  item.imagen?.trim()
-                    ? item.imagen
-                    : "https://via.placeholder.com/80"
-                }
-                className="w-14 h-14 rounded-lg object-cover"
-              />
+              {item.imagen ? (
+                <img
+                  src={item.imagen}
+                  alt={item.nombre}
+                  referrerPolicy="no-referrer"
+                  className="w-14 h-14 rounded-lg object-cover shrink-0"
+                />
+              ) : (
+                <div className="w-14 h-14 rounded-lg bg-surface-container shrink-0 flex items-center justify-center text-2xl">
+                  🛒
+                </div>
+              )}
 
               <div>
                 <p className="font-semibold">

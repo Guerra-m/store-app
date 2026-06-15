@@ -24,7 +24,7 @@ export const ordersApi = {
   getOrderById: async (id: number): Promise<Order> => {
     const res = await http.get(`/api/v1/pedidos/${id}`);
     const data = res.data as {
-      detalles?: { producto_id: number; nombre_snapshot: string; cantidad: number; precio_snapshot: number }[];
+      detalles?: { producto_id: number; nombre_snapshot: string; cantidad: number; precio_snapshot: number; imagen_snapshot?: string }[];
       [key: string]: unknown;
     };
     return {
@@ -34,6 +34,7 @@ export const ordersApi = {
         nombre: d.nombre_snapshot,
         cantidad: d.cantidad,
         precio: d.precio_snapshot,
+        imagen: d.imagen_snapshot ?? undefined,
       })),
     };
   },
