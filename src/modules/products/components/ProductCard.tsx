@@ -26,7 +26,7 @@ export const ProductCard = ({ product }: Props) => {
   const image =
     Array.isArray(product.imagenes_url) && product.imagenes_url.length > 0
       ? product.imagenes_url[0]
-      : "https://via.placeholder.com/300";
+      : "https://images.unsplash.com/photo-1542838132-92c53300491e?w=400";
 
   return (
     <article className="bg-surface-container rounded-2xl overflow-hidden shadow-warm hover:shadow-lg transition flex flex-col group w-full">
@@ -34,6 +34,7 @@ export const ProductCard = ({ product }: Props) => {
         <img
           src={image}
           alt={product.nombre}
+          referrerPolicy="no-referrer"
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
       </div>

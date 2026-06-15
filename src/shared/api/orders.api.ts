@@ -23,7 +23,19 @@ export const ordersApi = {
   // OBTENER DETALLE
   getOrderById: async (id: number): Promise<Order> => {
     const res = await http.get(`/api/v1/pedidos/${id}`);
-    return res.data;
+    const data = res.data as {
+      detalles?: { producto_id: number; nombre_snapshot: string; cantidad: number; precio_snapshot: number }[];
+      [key: string]: unknown;
+    };
+    return {
+      ...(data as Order),
+      detalles: data.detalles?.map((d) => ({
+        id: d.producto_id,
+        nombre: d.nombre_snapshot,
+        cantidad: d.cantidad,
+        precio: d.precio_snapshot,
+      })),
+    };
   },
 
   // AVANZAR ESTADO
