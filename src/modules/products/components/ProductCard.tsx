@@ -24,8 +24,8 @@ export const ProductCard = ({ product }: Props) => {
 };
 
   const image =
-    product.imagenes_url && product.imagenes_url.trim() !== ""
-      ? product.imagenes_url
+    Array.isArray(product.imagenes_url) && product.imagenes_url.length > 0
+      ? product.imagenes_url[0]
       : "https://via.placeholder.com/300";
 
   return (
