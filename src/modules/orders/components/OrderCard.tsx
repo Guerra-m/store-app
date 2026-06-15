@@ -5,27 +5,27 @@ type Props = {
 };
 
 const statusMap: Record<string, { label: string; style: string }> = {
-  pendiente: {
+  PENDIENTE: {
     label: "Pendiente",
     style: "bg-yellow-100 text-yellow-700",
   },
-  confirmado: {
+  CONFIRMADO: {
     label: "Confirmado",
     style: "bg-blue-100 text-blue-700",
   },
-  preparando: {
-    label: "Preparando",
+  EN_PREP: {
+    label: "En Preparación",
     style: "bg-orange-100 text-orange-700",
   },
-  en_camino: {
-    label: "En camino",
+  EN_CAMINO: {
+    label: "En Camino",
     style: "bg-purple-100 text-purple-700",
   },
-  entregado: {
+  ENTREGADO: {
     label: "Entregado",
     style: "bg-green-100 text-green-700",
   },
-  cancelado: {
+  CANCELADO: {
     label: "Cancelado",
     style: "bg-red-100 text-red-700",
   },

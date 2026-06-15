@@ -9,7 +9,7 @@ import { ordersApi } from "../../../shared/api/orders.api";
 import type { Order } from "../../orders/types/Order";
 
 import { useAuthStore } from "../../auth/store/auth.store";
-import { useOrderWebSocket } from "../hooks/useOrders";
+import { useOrdersWebSocket } from "../hooks/useOrdersWebSocket";
 
 export const OrdersPage = () => {
   const navigate = useNavigate();
@@ -54,8 +54,11 @@ export const OrdersPage = () => {
     void load();
   }, [load]);
 
-  // WebSocket: re-carga cuando llega un evento del pedido seleccionado
-  useOrderWebSocket(selectedOrder?.id ?? null, () => void load());
+  // WebSocket: escucha todos los pedidos activos en tiempo real
+  const activeOrderIds = orders
+    .filter((o) => !["ENTREGADO", "CANCELADO"].includes(o.estado_codigo))
+    .map((o) => o.id);
+  useOrdersWebSocket(activeOrderIds, () => void load());
 
   // EVITA RENDER DURANTE REDIRECT
   if (!isAuthenticated || !user) {
