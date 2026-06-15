@@ -56,7 +56,7 @@ export const ordersApi = {
   },
 
     createOrder: async (payload) => {
-    const res = await http.post("/api/v1/pedidos", payload);
+    const res = await http.post("/api/v1/pedidos/", payload);
     return res.data;
   },
 };
