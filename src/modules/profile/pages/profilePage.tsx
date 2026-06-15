@@ -63,9 +63,9 @@ export const ProfilePage = () => {
             Celular: {user.celular || "No especificado"}
           </div>
 
-          <div className="bg-surface-container rounded-xl p-3">
+          {/* <div className="bg-surface-container rounded-xl p-3">
             Roles: {user.roles.join(", ")}
-          </div>
+          </div> */}
 
         </div>
 

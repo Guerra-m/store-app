@@ -47,17 +47,17 @@ export const CartItem = ({
 
       {/* CONTROLS */}
       <div className="flex items-center gap-3">
-        <button onClick={onDecrease} className="w-8 h-8 rounded-md bg-surface-container border">
+        <button onClick={onDecrease} className="w-8 h-8 rounded-md bg-surface-container border cursor-pointer">
           -
         </button>
 
         <span>{quantity}</span>
 
-        <button onClick={onIncrease} className="w-8 h-8 rounded-md bg-surface-container border">
+        <button onClick={onIncrease} className="w-8 h-8 rounded-md bg-surface-container border cursor-pointer">
           +
         </button>
 
-        <button onClick={onDelete} className="ml-4 text-error text-sm font-semibold">
+        <button onClick={onDelete} className="ml-4 text-error text-sm font-semibold cursor-pointer">
           Eliminar
         </button>
       </div>

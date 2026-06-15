@@ -7,11 +7,14 @@ import { getProductById } from "../../../shared/api/producto.api";
 import type { ProductoRead } from "../../products/types/Producto";
 
 import { ProductCard } from "../../products/components/ProductCard";
+import type { CategoriaRead } from "../types/Categories";
+import { getCategoryById } from "../../../shared/api/categoria.api";
 
 export const CategoriesProductsPage = () => {
   const { id } = useParams();
 
   const [products, setProducts] = useState<ProductoRead[]>([]);
+  const [category, setCategory] = useState<CategoriaRead | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -19,6 +22,8 @@ export const CategoriesProductsPage = () => {
     const loadProducts = async () => {
       try {
         setLoading(true);
+        const categoryData = await getCategoryById(Number(id));
+        setCategory(categoryData);
 
         const relations = await getProductsByCategory(Number(id));
 
@@ -60,10 +65,14 @@ export const CategoriesProductsPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-10">
-      <h1 className="text-2xl font-bold mb-8">
-        Productos
+      <h1 className="text-2xl font-bold mb-3">
+        {category?.nombre ?? "Productos"}
       </h1>
-
+      {category?.descripcion && (
+        <p className="mt-2 text-on-surface-variant  pb-5">
+          {category.descripcion}
+        </p>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {products.map((product) => (
           <ProductCard

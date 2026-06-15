@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { OrderList } from "../components/OrderList";
@@ -9,6 +9,7 @@ import { ordersApi } from "../../../shared/api/orders.api";
 import type { Order } from "../../orders/types/Order";
 
 import { useAuthStore } from "../../auth/store/auth.store";
+import { useOrderWebSocket } from "../hooks/useOrders";
 
 export const OrdersPage = () => {
   const navigate = useNavigate();
@@ -33,32 +34,28 @@ export const OrdersPage = () => {
   }, [isAuthenticated, user, navigate]);
 
   // CARGA PEDIDOS
-  useEffect(() => {
-    const load = async () => {
-      // Evita cargar si no hay sesión
-      if (!isAuthenticated || !user) return;
-
-      try {
-        setLoading(true);
-
-        const basicOrders = await ordersApi.getOrders(0, 20);
-
-        const fullOrders = await Promise.all(
-          basicOrders.map(async (order) => {
-            return await ordersApi.getOrderById(order.id);
-          })
-        );
-
-        setOrders(fullOrders);
-      } catch (err) {
-        console.error("Error cargando pedidos:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
+  const load = useCallback(async () => {
+    if (!isAuthenticated || !user) return;
+    try {
+      setLoading(true);
+      const basicOrders = await ordersApi.getOrders(0, 20);
+      const fullOrders = await Promise.all(
+        basicOrders.map((order) => ordersApi.getOrderById(order.id))
+      );
+      setOrders(fullOrders);
+    } catch (err) {
+      console.error("Error cargando pedidos:", err);
+    } finally {
+      setLoading(false);
+    }
   }, [isAuthenticated, user]);
+
+  useEffect(() => {
+    void load();
+  }, [load]);
+
+  // WebSocket: re-carga cuando llega un evento del pedido seleccionado
+  useOrderWebSocket(selectedOrder?.id ?? null, () => void load());
 
   // EVITA RENDER DURANTE REDIRECT
   if (!isAuthenticated || !user) {
