@@ -6,7 +6,7 @@ type Props = {
   quantity: number;
   price: number;
   image: string;
-
+  unidadSimbolo?: string | null;
   onIncrease: () => void;
   onDecrease: () => void;
   onDelete: () => void;
@@ -18,6 +18,7 @@ export const CartItem = ({
   quantity,
   price,
   image,
+  unidadSimbolo,
   onIncrease,
   onDecrease,
   onDelete,
@@ -46,6 +47,11 @@ export const CartItem = ({
 
         <p className="mt-1 text-sm font-semibold text-primary">
           ${Number(price ?? 0).toFixed(2)}
+          {unidadSimbolo && (
+            <span className="text-xs font-normal text-on-surface-variant ml-0.5">
+              / {unidadSimbolo}
+            </span>
+          )}
         </p>
       </div>
 
@@ -55,7 +61,14 @@ export const CartItem = ({
           -
         </button>
 
-        <span>{quantity}</span>
+        <span>
+          {quantity}
+          {unidadSimbolo && (
+            <span className="text-xs text-on-surface-variant ml-0.5 font-mono">
+              {unidadSimbolo}
+            </span>
+          )}
+        </span>
 
         <button onClick={onIncrease} className="w-8 h-8 rounded-md bg-surface-container border cursor-pointer">
           +

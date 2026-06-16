@@ -35,6 +35,7 @@ export interface ProductoRead {
 
   stock_cantidad: number;
   disponible: boolean;
+  unidad_venta_id?: number | null;
 
   categorias: CategoriaRead[];
   ingredientes: IngredienteRead[];

@@ -2,6 +2,7 @@ import { useAuthStore } from "../../auth/store/auth.store";
 import { useCartStore } from "../../cart/store/cart.store";
 import { useAuthModalStore } from "../../auth/store/auth.modal.store";
 import { useToastStore } from "../../../shared/store/toast.store";
+import { useUnidades } from "../../../shared/hooks/useUnidades";
 import type { ProductoRead } from "../types/Producto";
 
 type Props = {
@@ -13,6 +14,10 @@ export const ProductCard = ({ product }: Props) => {
   const addItem = useCartStore((state) => state.addItem);
   const openLogin = useAuthModalStore((state) => state.openLogin);
   const addToast = useToastStore((s) => s.addToast);
+  const { data: unidades = [] } = useUnidades();
+  const unidadSimbolo = product.unidad_venta_id
+    ? (unidades.find((u) => u.id === product.unidad_venta_id)?.simbolo ?? null)
+    : null;
 
   const handleAddToCart = () => {
     if (!user) {
@@ -51,6 +56,11 @@ export const ProductCard = ({ product }: Props) => {
         <div className="flex items-center justify-between mt-3 sm:mt-4">
           <span className="text-primary font-bold text-base sm:text-lg">
             ${product.precio_base}
+            {unidadSimbolo && (
+              <span className="text-xs font-normal text-on-surface-variant ml-0.5">
+                / {unidadSimbolo}
+              </span>
+            )}
           </span>
 
           <button

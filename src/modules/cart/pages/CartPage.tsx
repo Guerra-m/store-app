@@ -1,13 +1,17 @@
 import { useCartStore } from "../../../modules/cart/store/cart.store";
 import { CartItem } from "../components/CartItem";
 import { CartSummary } from "../components/CartSummary";
+import { useUnidades } from "../../../shared/hooks/useUnidades";
 
 export const CartPage = () => {
   const items = useCartStore((state) => state.items);
-
   const addItem = useCartStore((state) => state.addItem);
   const decreaseItem = useCartStore((state) => state.decreaseItem);
   const removeItem = useCartStore((state) => state.removeItem);
+  const { data: unidades = [] } = useUnidades();
+
+  const getSimboloUnidad = (id?: number | null) =>
+    id ? (unidades.find((u) => u.id === id)?.simbolo ?? null) : null;
 
   if (!items.length) {
     return (
@@ -50,7 +54,7 @@ export const CartPage = () => {
                 item.product.imagenes_url ||
                 "https://images.unsplash.com/photo-1542838132-92c53300491e"
               }
-
+              unidadSimbolo={getSimboloUnidad(item.product.unidad_venta_id)}
               onIncrease={() => addItem(item.product)}
               onDecrease={() => decreaseItem(item.product.id)}
               onDelete={() => removeItem(item.product.id)}
