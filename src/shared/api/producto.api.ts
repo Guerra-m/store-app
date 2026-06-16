@@ -35,6 +35,19 @@ export const getAvailableProducts = async (params?: {
 };
 
 /**
+ * GET /api/v1/productos/?texto=...&disponible=true
+ */
+export const searchProducts = async (params: {
+  texto: string;
+  disponible?: boolean;
+  limit?: number;
+  offset?: number;
+}): Promise<ProductoRead[]> => {
+  const res = await http.get(`${BASE}/`, { params: { disponible: true, limit: 50, ...params } });
+  return res.data;
+};
+
+/**
  * GET /api/v1/productos/{id}
  */
 export const getProductById = async (

@@ -1,7 +1,17 @@
+import { useState, type KeyboardEvent } from "react";
+import { useNavigate } from "react-router-dom";
+
 export const SearchBar = () => {
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && query.trim()) {
+      navigate(`/buscar?q=${encodeURIComponent(query.trim())}`);
+    }
+  };
 
   return (
-
     <div
       className="
         flex
@@ -21,7 +31,6 @@ export const SearchBar = () => {
         min-w-70
       "
     >
-
       <span
         className="
           material-symbols-outlined
@@ -35,6 +44,9 @@ export const SearchBar = () => {
 
       <input
         type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder="Buscar productos..."
         className="
           w-full
@@ -48,7 +60,6 @@ export const SearchBar = () => {
           placeholder:text-on-surface-variant
         "
       />
-
     </div>
   );
 };

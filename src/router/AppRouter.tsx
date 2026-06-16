@@ -6,6 +6,7 @@ import { CartPage } from '../modules/cart/pages/CartPage'
 import { OrdersPage } from '../modules/orders/pages/OrdersPage'
 import { ProfilePage } from '../modules/profile/pages/profilePage'
 import { CategoriesProductsPage } from '../modules/categories/pages/CategoriesProductsPage'
+import { SearchPage } from '../modules/search/pages/SearchPage'
 
 export const AppRouter = () => {
   return (
@@ -33,6 +34,9 @@ export const AppRouter = () => {
         </Route>
         <Route element={<StoreLayout />}>
           <Route path="/perfil" element={<ProfilePage />} />
+        </Route>
+        <Route element={<StoreLayout />}>
+          <Route path="/buscar" element={<SearchPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
