@@ -7,7 +7,7 @@ function getWsUrl(pedidoId: number): string {
 
 export const useOrdersWebSocket = (
   orderIds: number[],
-  onUpdate: () => void
+  onUpdate: (id: number) => void
 ) => {
   const onUpdateRef = useRef(onUpdate);
   onUpdateRef.current = onUpdate;
@@ -24,7 +24,7 @@ export const useOrdersWebSocket = (
         try {
           const msg = JSON.parse(event.data as string) as { type: string };
           if (msg.type === "estado_actualizado") {
-            onUpdateRef.current();
+            onUpdateRef.current(id);
           }
         } catch {
           // mensaje no JSON — ignorar

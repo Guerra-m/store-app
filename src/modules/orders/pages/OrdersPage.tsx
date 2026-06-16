@@ -31,12 +31,23 @@ export const OrdersPage = () => {
       setLoading(true);
       const list = await ordersApi.getOrders(0, 20);
       setOrders(list);
+      setLoading(false);
+
+      // Enriquecer cada tarjeta con imagen en cuanto llegue, sin bloquear
+      void Promise.allSettled(
+        list.map((order) =>
+          ordersApi.getOrderById(order.id).then((full) => {
+            setOrders((prev) => prev.map((o) => (o.id === full.id ? full : o)));
+          }),
+        ),
+      );
     } catch (err) {
       console.error("Error cargando pedidos:", err);
-    } finally {
       setLoading(false);
     }
   }, [isAuthenticated, user]);
+
+
 
   useEffect(() => { void load(); }, [load]);
 
@@ -53,10 +64,19 @@ export const OrdersPage = () => {
     }
   };
 
+  const refreshOrder = useCallback(async (id: number) => {
+    try {
+      const updated = await ordersApi.getOrderById(id);
+      setOrders((prev) => prev.map((o) => (o.id === id ? updated : o)));
+    } catch (err) {
+      console.error("Error actualizando pedido:", err);
+    }
+  }, []);
+
   const activeOrderIds = orders
-    .filter((o) => !["ENTREGADO", "CANCELADO"].includes(o.estado_codigo))
+    .filter((o) => !["ENTREGADO", "CANCELADO"].includes(o.estado_codigo as string))
     .map((o) => o.id);
-  useOrdersWebSocket(activeOrderIds, () => void load());
+  useOrdersWebSocket(activeOrderIds, (id) => void refreshOrder(id));
 
   if (!isAuthenticated || !user) return null;
 
