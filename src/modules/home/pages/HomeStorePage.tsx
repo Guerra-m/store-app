@@ -75,8 +75,8 @@ export const HomeStorePage = () => {
           <ProductsSection products={products} />
         </div>
 
-        {/* CATEGORÍAS */}
-        <CategoriesSection categories={categories} />
+        {/* CATEGORÍAS — solo raíces para no mostrar subcategorías huérfanas */}
+        <CategoriesSection categories={categories.filter((c) => c.parent_id === null)} />
 
         {/* INFO */}
         <WhyChooseUsSection />

@@ -33,14 +33,21 @@ export const OrdersPage = () => {
       setOrders(list);
       setLoading(false);
 
-      // Enriquecer cada tarjeta con imagen en cuanto llegue, sin bloquear
-      void Promise.allSettled(
-        list.map((order) =>
-          ordersApi.getOrderById(order.id).then((full) => {
-            setOrders((prev) => prev.map((o) => (o.id === full.id ? full : o)));
-          }),
-        ),
-      );
+      // Enriquecer con imágenes en lotes de 3 para no saturar el rate limiter
+      const BATCH = 3;
+      for (let i = 0; i < list.length; i += BATCH) {
+        const batch = list.slice(i, i + BATCH);
+        await Promise.allSettled(
+          batch.map((order) =>
+            ordersApi.getOrderById(order.id).then((full) => {
+              setOrders((prev) => prev.map((o) => (o.id === full.id ? full : o)));
+            }),
+          ),
+        );
+        if (i + BATCH < list.length) {
+          await new Promise((r) => setTimeout(r, 400));
+        }
+      }
     } catch (err) {
       console.error("Error cargando pedidos:", err);
       setLoading(false);

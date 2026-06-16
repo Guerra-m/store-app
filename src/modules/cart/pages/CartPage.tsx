@@ -51,7 +51,7 @@ export const CartPage = () => {
               quantity={item.quantity}
               price={item.product.precio_base}
               image={
-                item.product.imagenes_url ||
+                item.product.imagenes_url?.[0] ||
                 "https://images.unsplash.com/photo-1542838132-92c53300491e"
               }
               unidadSimbolo={getSimboloUnidad(item.product.unidad_venta_id)}

@@ -32,14 +32,18 @@ export const useOrdersWebSocket = (
       };
 
       ws.onerror = () => {
-        ws.close();
+        if (ws.readyState !== WebSocket.CLOSED) ws.close();
       };
 
       return ws;
     });
 
     return () => {
-      sockets.forEach((ws) => ws.close());
+      sockets.forEach((ws) => {
+        if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
+          ws.close();
+        }
+      });
     };
   // idsKey estabiliza el efecto: solo reconecta si cambia el conjunto de IDs
   // eslint-disable-next-line react-hooks/exhaustive-deps
