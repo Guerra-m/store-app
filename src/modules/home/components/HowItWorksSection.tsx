@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+
 const STEPS = [
   {
     icon: "search",
@@ -29,9 +31,9 @@ export const HowItWorksSection = () => (
       <p className="text-on-surface-variant mt-3">Tres pasos y tu comida está en camino</p>
     </div>
 
-    <div className="max-w-3xl mx-auto flex flex-col md:flex-row items-center gap-0">
+    <div className="max-w-3xl mx-auto flex flex-col md:flex-row items-start">
       {STEPS.map((step, i) => (
-        <div key={step.title} className="flex flex-col md:flex-row items-center flex-1">
+        <Fragment key={step.title}>
           {/* Card */}
           <div className="flex flex-col items-center text-center px-6 py-2 flex-1">
             <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-warm ${step.color}`}>
@@ -49,9 +51,9 @@ export const HowItWorksSection = () => (
             <p className="text-sm text-on-surface-variant leading-relaxed">{step.description}</p>
           </div>
 
-          {/* Connector */}
+          {/* Connector — between steps only, vertically centered at the icon */}
           {i < STEPS.length - 1 && (
-            <div className="hidden md:flex items-center shrink-0 mb-10">
+            <div className="hidden md:flex items-center shrink-0 mt-8">
               <div className="flex gap-1">
                 {Array.from({ length: 5 }).map((_, j) => (
                   <div key={j} className="w-1.5 h-1.5 rounded-full bg-primary/30" />
@@ -62,7 +64,7 @@ export const HowItWorksSection = () => (
               </span>
             </div>
           )}
-        </div>
+        </Fragment>
       ))}
     </div>
   </section>
