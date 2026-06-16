@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router-dom";
+
 export const Logo = () => {
+  const navigate = useNavigate();
 
   return (
 
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/")}>
 
       <div
         className="

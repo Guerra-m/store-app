@@ -1,19 +1,13 @@
 interface Props {
   children: string;
+  onClick?: () => void;
 }
 
-export const FooterLink = ({
-  children,
-}: Props) => {
-
+export const FooterLink = ({ children, onClick }: Props) => {
   return (
-
     <li
-      className="
-        hover:text-primary
-        transition-colors
-        cursor-pointer
-      "
+      onClick={onClick}
+      className="hover:text-primary transition-colors cursor-pointer"
     >
       {children}
     </li>

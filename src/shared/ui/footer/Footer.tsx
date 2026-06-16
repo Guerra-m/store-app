@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { FooterSection } from "./FooterSection";
 import { FooterLink } from "./FooterLink";
 import { FooterContactItem } from "./FooterContactItem";
+import secreto from "../../../assets/secreto.jpg";
 
 const empresaLinks = [
   "Sobre Nosotros",
@@ -30,8 +32,10 @@ const contactItems = [
 ];
 
 export const Footer = () => {
+  const [showSecreto, setShowSecreto] = useState(false);
 
   return (
+    <>
 
     <footer
       className="mt-20 border-t border-outline-variant bg-surface-container-low
@@ -122,11 +126,12 @@ export const Footer = () => {
           >
 
             {soporteLinks.map((link) => (
-
-              <FooterLink key={link}>
+              <FooterLink
+                key={link}
+                onClick={link === "Contacto" ? () => setShowSecreto(true) : undefined}
+              >
                 {link}
               </FooterLink>
-
             ))}
 
           </ul>
@@ -162,5 +167,20 @@ export const Footer = () => {
       </div>
 
     </footer>
+
+      {showSecreto && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80"
+          onClick={() => setShowSecreto(false)}
+        >
+          <img
+            src={secreto}
+            alt="Contacto"
+            className="max-w-[70vw] max-h-[80vh] object-contain rounded-2xl shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+    </>
   );
 };
