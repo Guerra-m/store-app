@@ -136,6 +136,27 @@ export const CartSummary = ({ subtotal }: Props) => {
             </p>
           </div>
         </label>
+
+        <label className="flex items-center gap-3 rounded-xl border border-outline-variant p-3 opacity-50 cursor-not-allowed">
+          <input
+            type="radio"
+            name="formaPago"
+            value="TRANSFERENCIA"
+            disabled
+            className="accent-primary"
+          />
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium">Transferencia bancaria</span>
+              <span className="text-[10px] font-semibold bg-outline-variant text-on-surface-variant px-2 py-0.5 rounded-full">
+                Próximamente
+              </span>
+            </div>
+            <p className="text-xs text-on-surface-variant">
+              CBU / CVU — transferí desde tu banco
+            </p>
+          </div>
+        </label>
       </div>
 
       {/* BOTÓN */}
