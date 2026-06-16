@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 type Props = {
   name: string;
   description: string;
@@ -20,6 +22,8 @@ export const CartItem = ({
   onDecrease,
   onDelete,
 }: Props) => {
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
   return (
     <div className="flex items-center justify-between gap-4 rounded-xl border border-outline-variant bg-gray-50 p-4 shadow-warm">
 
@@ -57,9 +61,30 @@ export const CartItem = ({
           +
         </button>
 
-        <button onClick={onDelete} className="ml-4 text-error text-sm font-semibold cursor-pointer">
-          Eliminar
-        </button>
+        {confirmDelete ? (
+          <div className="ml-4 flex items-center gap-2">
+            <span className="text-xs text-on-surface-variant">¿Eliminar?</span>
+            <button
+              onClick={() => setConfirmDelete(false)}
+              className="text-xs px-2 py-1 rounded bg-surface-container border cursor-pointer"
+            >
+              No
+            </button>
+            <button
+              onClick={onDelete}
+              className="text-xs px-2 py-1 rounded bg-error text-white cursor-pointer"
+            >
+              Sí
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => setConfirmDelete(true)}
+            className="ml-4 text-error text-sm font-semibold cursor-pointer"
+          >
+            Eliminar
+          </button>
+        )}
       </div>
     </div>
   );

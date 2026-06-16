@@ -1,6 +1,7 @@
 import { useAuthStore } from "../../auth/store/auth.store";
 import { useCartStore } from "../../cart/store/cart.store";
 import { useAuthModalStore } from "../../auth/store/auth.modal.store";
+import { useToastStore } from "../../../shared/store/toast.store";
 import type { ProductoRead } from "../types/Producto";
 
 type Props = {
@@ -10,18 +11,17 @@ type Props = {
 export const ProductCard = ({ product }: Props) => {
   const user = useAuthStore((state) => state.user);
   const addItem = useCartStore((state) => state.addItem);
-  const openLogin = useAuthModalStore(
-  (state) => state.openLogin
-);
+  const openLogin = useAuthModalStore((state) => state.openLogin);
+  const addToast = useToastStore((s) => s.addToast);
 
- const handleAddToCart = () => {
-  if (!user) {
-    openLogin("Debes iniciar sesión para agregar productos");
-    return;
-  }
-
-  addItem(product);
-};
+  const handleAddToCart = () => {
+    if (!user) {
+      openLogin("Debes iniciar sesión para agregar productos");
+      return;
+    }
+    addItem(product);
+    addToast(`${product.nombre} agregado al carrito`, "success");
+  };
 
   const image =
     Array.isArray(product.imagenes_url) && product.imagenes_url.length > 0

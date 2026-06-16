@@ -1,17 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../auth/store/auth.store";
 import { useAuth } from "../../auth/hooks/useAuth";
+import { useToastStore } from "../../../shared/store/toast.store";
 
 export const ProfilePage = () => {
   const navigate = useNavigate();
 
   const { logout } = useAuth();
+  const addToast = useToastStore((s) => s.addToast);
 
   const user = useAuthStore((state) => state.user);
   const isAuthenticated = useAuthStore(
     (state) => state.isAuthenticated
   );
+
+  const [confirmLogout, setConfirmLogout] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated || !user) {
@@ -25,6 +29,7 @@ export const ProfilePage = () => {
 
   const handleLogout = async () => {
     await logout();
+    addToast("Sesión cerrada", "info");
     navigate("/");
   };
 
@@ -78,12 +83,34 @@ export const ProfilePage = () => {
             Cerrar
           </button>
 
-          <button
-            onClick={handleLogout}
-            className="w-full bg-red-500 text-white py-2 rounded-lg"
-          >
-            Cerrar sesión
-          </button>
+          {confirmLogout ? (
+            <div className="w-full flex flex-col gap-2">
+              <p className="text-sm text-center text-on-surface-variant">
+                ¿Seguro que querés cerrar sesión?
+              </p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setConfirmLogout(false)}
+                  className="flex-1 bg-surface-container py-2 rounded-lg text-sm"
+                >
+                  No
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="flex-1 bg-red-500 text-white py-2 rounded-lg text-sm"
+                >
+                  Sí, salir
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              onClick={() => setConfirmLogout(true)}
+              className="w-full bg-red-500 text-white py-2 rounded-lg"
+            >
+              Cerrar sesión
+            </button>
+          )}
 
         </div>
 

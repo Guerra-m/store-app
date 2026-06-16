@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuthModalStore } from "../store/auth.modal.store";
 import { userApi } from "../../../shared/api/user.api";
 import { useAuthStore } from "../store/auth.store";
+import { useToastStore } from "../../../shared/store/toast.store";
 
 export const AuthModal = () => {
   const {
@@ -16,6 +17,8 @@ export const AuthModal = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
   const setError = useAuthStore((state) => state.setError);
 
+  const addToast = useToastStore((s) => s.addToast);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,18 +30,16 @@ export const AuthModal = () => {
     setError(null);
 
     try {
-
       await userApi.login(email, password);
-
       const user = await userApi.me();
-
       setUser(user);
       setAuth(true);
-
-
       closeModal();
+      addToast(`¡Bienvenido, ${user.nombre}!`, "success");
     } catch (err: any) {
-      setError(err?.response?.data?.detail || "Error al iniciar sesión");
+      const msg = err?.response?.data?.detail || "Credenciales incorrectas";
+      setError(msg);
+      addToast(msg, "error");
     } finally {
       setLoading(false);
     }
