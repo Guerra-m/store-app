@@ -55,7 +55,7 @@ export const CartSummary = ({ subtotal }: Props) => {
         // Generar preferencia MP y redirigir al checkout
         const { init_point } = await pagoApi.crearPreferencia(pedido.id);
         clearCart();
-        window.location.href = init_point;
+        window.open(init_point, '_blank');
       } else {
         clearCart();
         alert("Pedido creado con éxito");
