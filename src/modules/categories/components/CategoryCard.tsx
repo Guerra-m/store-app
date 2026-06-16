@@ -2,17 +2,18 @@ import type { CategoriaRead } from "../types/Categories";
 import { useNavigate } from "react-router-dom";
 type Props = {
   category: CategoriaRead;
+  onClick?: () => void;
 };
 
 const FALLBACK_IMAGE =
   "";
 
-export const CategoryCard = ({ category }: Props) => {
+export const CategoryCard = ({ category, onClick }: Props) => {
   const image = category.imagen_url || FALLBACK_IMAGE;
   const navigate = useNavigate();
   return (
     <article
-      onClick={() => navigate(`/categorias/${category.id}`)}
+      onClick={onClick ?? (() => navigate(`/categorias/${category.id}`))}
       className="
         relative
         overflow-hidden
