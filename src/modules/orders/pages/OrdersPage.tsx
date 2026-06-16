@@ -13,36 +13,24 @@ import { useOrdersWebSocket } from "../hooks/useOrdersWebSocket";
 
 export const OrdersPage = () => {
   const navigate = useNavigate();
-
   const user = useAuthStore((state) => state.user);
-
-  const isAuthenticated = useAuthStore(
-    (state) => state.isAuthenticated
-  );
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [loadingDetail, setLoadingDetail] = useState(false);
 
-  const [selectedOrder, setSelectedOrder] =
-    useState<Order | null>(null);
-
-  // PROTECCIÓN
   useEffect(() => {
-    if (!isAuthenticated || !user) {
-      navigate("/");
-    }
+    if (!isAuthenticated || !user) navigate("/");
   }, [isAuthenticated, user, navigate]);
 
-  // CARGA PEDIDOS
   const load = useCallback(async () => {
     if (!isAuthenticated || !user) return;
     try {
       setLoading(true);
-      const basicOrders = await ordersApi.getOrders(0, 20);
-      const fullOrders = await Promise.all(
-        basicOrders.map((order) => ordersApi.getOrderById(order.id))
-      );
-      setOrders(fullOrders);
+      const list = await ordersApi.getOrders(0, 20);
+      setOrders(list);
     } catch (err) {
       console.error("Error cargando pedidos:", err);
     } finally {
@@ -50,28 +38,32 @@ export const OrdersPage = () => {
     }
   }, [isAuthenticated, user]);
 
-  useEffect(() => {
-    void load();
-  }, [load]);
+  useEffect(() => { void load(); }, [load]);
 
-  // WebSocket: escucha todos los pedidos activos en tiempo real
+  // Al abrir un pedido, busca el detalle completo (con imágenes)
+  const handleSelectOrder = async (order: Order) => {
+    setLoadingDetail(true);
+    try {
+      const full = await ordersApi.getOrderById(order.id);
+      setSelectedOrder(full);
+    } catch {
+      setSelectedOrder(order);
+    } finally {
+      setLoadingDetail(false);
+    }
+  };
+
   const activeOrderIds = orders
     .filter((o) => !["ENTREGADO", "CANCELADO"].includes(o.estado_codigo))
     .map((o) => o.id);
   useOrdersWebSocket(activeOrderIds, () => void load());
 
-  // EVITA RENDER DURANTE REDIRECT
-  if (!isAuthenticated || !user) {
-    return null;
-  }
+  if (!isAuthenticated || !user) return null;
 
   if (loading) {
     return (
       <div className="w-full max-w-6xl mx-auto px-6 py-10">
-        <h1 className="text-2xl font-bold mb-6">
-          Mis pedidos
-        </h1>
-
+        <h1 className="text-2xl font-bold mb-6">Mis pedidos</h1>
         <p>Cargando pedidos...</p>
       </div>
     );
@@ -80,10 +72,7 @@ export const OrdersPage = () => {
   if (!orders.length) {
     return (
       <div className="w-full max-w-6xl mx-auto px-6 py-10">
-        <h1 className="text-2xl font-bold mb-6">
-          Mis pedidos
-        </h1>
-
+        <h1 className="text-2xl font-bold mb-6">Mis pedidos</h1>
         <p>No tenés pedidos todavía.</p>
       </div>
     );
@@ -91,26 +80,27 @@ export const OrdersPage = () => {
 
   return (
     <div className="w-full max-w-6xl mx-auto px-6 py-10">
+      <h1 className="text-2xl font-bold mb-6">Mis pedidos</h1>
 
-      {/* HEADER */}
-      <h1 className="text-2xl font-bold mb-6">
-        Mis pedidos
-      </h1>
-
-      {/* LISTA */}
       <OrderList
         orders={orders}
-        onSelectOrder={(order) => setSelectedOrder(order)}
+        onSelectOrder={(order) => void handleSelectOrder(order)}
       />
 
-      {/* MODAL */}
-      {selectedOrder && (
+      {loadingDetail && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+          <div className="bg-surface rounded-xl px-6 py-4 text-sm font-medium shadow-warm">
+            Cargando detalle…
+          </div>
+        </div>
+      )}
+
+      {selectedOrder && !loadingDetail && (
         <OrderModal
           order={selectedOrder}
           onClose={() => setSelectedOrder(null)}
         />
       )}
-
     </div>
   );
 };

@@ -17,7 +17,20 @@ export const ordersApi = {
     const res = await http.get("/api/v1/pedidos", {
       params: { offset, limit },
     });
-    return res.data;
+    type RawOrder = {
+      detalles?: { producto_id: number; nombre_snapshot: string; cantidad: number; precio_snapshot: number; imagen_snapshot?: string }[];
+      [key: string]: unknown;
+    };
+    return (res.data as RawOrder[]).map((d) => ({
+      ...(d as Order),
+      detalles: d.detalles?.map((det) => ({
+        id: det.producto_id,
+        nombre: det.nombre_snapshot,
+        cantidad: det.cantidad,
+        precio: det.precio_snapshot,
+        imagen: det.imagen_snapshot ?? undefined,
+      })),
+    }));
   },
 
   // OBTENER DETALLE
