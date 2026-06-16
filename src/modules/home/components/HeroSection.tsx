@@ -24,9 +24,9 @@ export const HeroSection = ({ onScrollProducts, onGoToCategories, productCount }
           </div>
 
           <h1 className="text-4xl md:text-6xl font-bold text-on-surface leading-tight font-store">
-            Pedí lo que<br />
+            Todo lo que<br />
             <span className="text-primary">más te gusta</span>,<br />
-            cuando querés
+            a la vuelta de la esquina
           </h1>
 
           <p className="text-on-surface-variant text-lg leading-relaxed">
